@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
 
 public class AnsjCut {
 
-    private static final Set<String> stopWords = Set.of("的", "了", "在", "是", "我", "有","他","她","它","[","]"); // 定义停用词集合
+    // 定义停用词集合
+    private static final Set<String> stopWords = Set.of("的", "了", "在", "是", "我", "有","他","她","它","[","]","因为","也","让","可是","但是","地","才","会","要","和","必须");
 
     public static List<String> WordAnsjCut(String p){
 
