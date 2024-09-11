@@ -7,16 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReadAndWrite {
-    public static List<String> Read(String textPath) throws IOException {
-        List<String> article = new ArrayList<String>();
+    public static List<String> Read(String textPath) {
+        List<String> article = new ArrayList<>();
 
 
         try {
             // 读取文件内容
             String Text = new String(Files.readAllBytes(Paths.get(textPath)));
-
-            // 去除换行、空格和标点符号
-            Text = Text.replaceAll("\\s+", "").replaceAll("[.,;:!?'\"“”‘’。、，？《》（）【】「」：]", "");
 
             // 将处理后的文本添加到列表中
             article.add(Text);
@@ -31,14 +28,13 @@ public class ReadAndWrite {
 
 
 
-    public static void Write(String outputPath) {
-
+    public static void Write(String outputPath, float s) {
         // 输出到文件
         try (PrintWriter writer = new PrintWriter(new FileWriter(outputPath))) {
-            writer.printf("test R&W");
+            writer.printf("余弦相似度：%.2f", s); // 正确传递参数
         } catch (IOException e) {
-        e.printStackTrace();
-    }
+            e.printStackTrace();
+        }
     }
 
 }
