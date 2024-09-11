@@ -1,4 +1,4 @@
-package main;
+package Main;
 
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;

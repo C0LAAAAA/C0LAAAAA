@@ -1,10 +1,10 @@
-package main;
+package Main;
 
 import java.util.List;
 
 public class CountNum {
 
-    public static int[] CountTF(List<String> text, List<String> mergetext) {
+    public static int[] CountNum(List<String> text, List<String> mergetext) {
         int[] frequency = new int[mergetext.size()];
         for (String word : text) {
             for (int i = 0; i < mergetext.size(); i++) {

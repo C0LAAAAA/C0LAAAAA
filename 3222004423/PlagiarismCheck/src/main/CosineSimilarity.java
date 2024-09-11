@@ -1,4 +1,4 @@
-package main;
+package Main;
 
 public class CosineSimilarity {
     public static double getSimilarity(int[] number1, int[] number2) {
