@@ -1,37 +1,53 @@
-package test;
+package Main;
 
-import Main.CosineSimilarity;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class CosineSimilarityTest {
 
-    public static void main(String[] args) {
-        // 定义两个向量
-        int[] v1 = {1, 2, 3};
-        int[] v2 = {4, 5, 6};
-
-        // 计算两个向量的余弦相似度
-        double similarity= CosineSimilarity.getSimilarity(v1, v2);
-
-        // 打印结果
-        System.out.println("余弦相似度1: " + similarity);
-
-        // 定义两个完全垂直的向量
-        int[] v3 = {1, 0, 0};
-        int[] v4 = {0, 1, 0};
-
-        // 计算两个完全垂直的向量的余弦相似度
-        double similarity2 = CosineSimilarity.getSimilarity(v3, v4);
-
-        // 打印结果
-        System.out.println("余弦相似度2: " + similarity2);
-
-        // 定义一个与自身相关的向量
-        int[] v5 = {2, 3, 4};
-
-        // 计算向量与自身的余弦相似度
-        double similarity3 = CosineSimilarity.getSimilarity(v5, v5);
-
-        // 打印结果
-        System.out.println("余弦相似度3: " + similarity3);
+    // 测试完全相同的向量，预期余弦相似度为1.0
+    @Test
+    public void test1() {
+        int[] vector1 = {1, 2, 3};
+        int[] vector2 = {1, 2, 3};
+        double similarity = CosineSimilarity.getSimilarity(vector1, vector2);
+        assertEquals(1.0, similarity, 0.001);
     }
+
+    // 测试正交向量（不同维度），预期余弦相似度为0.0
+    @Test
+    public void test2() {
+        int[] vector1 = {1, 0, 0};
+        int[] vector2 = {0, 1, 0};
+        double similarity = CosineSimilarity.getSimilarity(vector1, vector2);
+        assertEquals(0.0, similarity, 0.001);
+    }
+
+    // 测试完全相反的向量，预期余弦相似度为-1.0
+    @Test
+    public void test3() {
+        int[] vector1 = {1, 2, 3};
+        int[] vector2 = {-1, -2, -3};
+        double similarity = CosineSimilarity.getSimilarity(vector1, vector2);
+        assertEquals(-1.0, similarity, 0.001);
+    }
+
+    // 测试相似的向量（一个向量的每个元素是另一个向量的元素的两倍），预期余弦相似度为1.0
+    @Test
+    public void test4() {
+        int[] vector1 = {1, 1, 1};
+        int[] vector2 = {2, 2, 2};
+        double similarity = CosineSimilarity.getSimilarity(vector1, vector2);
+        assertEquals(1.0, similarity, 0.001);
+    }
+
+    // 测试一个向量全为零，预期余弦相似度为0.0
+    @Test
+    public void test5() {
+        int[] vector1 = {0, 0, 0};
+        int[] vector2 = {1, 2, 3};
+        double similarity = CosineSimilarity.getSimilarity(vector1, vector2);
+        assertEquals(0.0, similarity, 0.001);
+    }
+
 }
