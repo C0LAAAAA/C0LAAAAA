@@ -3,15 +3,15 @@ import Utils.ProblemGenerator;
 
 public class Main {
     public static void main(String[] args) {
-        int numProblems = 0;
-        int range = 0;
+        int numProblems = 11;
+        int range = 10;
         String exerciseFile = null;
         String answerFile = null;
 
 //        String exerciseFile = "resources/Exercises.txt";
 //        String answerFile = "resources/Answers.txt";
 
-        // 遍历命令行参数
+        /*// 遍历命令行参数
         for (int i = 0; i < args.length; i++) {
             if ("-n".equals(args[i]) && (i + 1) < args.length) {
                 numProblems = Integer.parseInt(args[i + 1]);
@@ -29,7 +29,7 @@ public class Main {
                 printHelp();
                 return;
             }
-        }
+        }*/
 
         // 根据参数执行相应的操作
         if (numProblems > 0 && range > 0) {
