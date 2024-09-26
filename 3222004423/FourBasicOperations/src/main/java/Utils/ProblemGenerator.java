@@ -28,6 +28,9 @@ public class ProblemGenerator {
                 answers.add(answer);
             }
         }
+
+        System.out.println(problems);
+
         // 保存文件
         FileUtils.writeToFile("resources/Exercises.txt", problems);
         FileUtils.writeToFile("resources/Answers.txt", answers);
