@@ -3,8 +3,8 @@ import Utils.ProblemGenerator;
 
 public class Main {
     public static void main(String[] args) {
-        int numProblems = 11;
-        int range = 10;
+        int numProblems = 40000;
+        int range = 2;
         String exerciseFile = null;
         String answerFile = null;
 

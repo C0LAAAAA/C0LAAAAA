@@ -67,10 +67,6 @@ public class Expression {
         public String toString() {
             return operator;
         }
-
-        public String getOperator() {
-            return this.operator;
-        }
     }
 
     // 生成一个随机的算术表达式
@@ -79,6 +75,10 @@ public class Expression {
         root = buildExpression(currentOperators);
         return print(root) + " = ";
     }
+
+//    public static String getOrignalExpression(){
+//        return print(root);
+//    }
 
     public static String getAdjustedExpression() {
         adjustTree(root);
@@ -142,15 +142,15 @@ public class Expression {
     }
 
     private static boolean rightBrackets(String rightSymbol, String currentSymbol) {
-        return ifNeedsBrackets(currentSymbol, rightSymbol);
+        return !ifNeedsBrackets(currentSymbol, rightSymbol);
     }
 
     private static boolean ifNeedsBrackets(String operator1, String operator2) {
         // 定义运算符优先级
         int priority1 = getOperatorPriority(operator1);
         int priority2 = getOperatorPriority(operator2);
-        // 如果左侧运算符优先级高于或等于当前节点的优先级，则需要括号
-        return priority1 >= priority2;
+        // 如果左侧运算符优先级低于当前节点的优先级，则需要括号
+        return priority1 < priority2;
     }
 
     private static int getOperatorPriority(String operator) {

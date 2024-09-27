@@ -32,26 +32,6 @@ public class Fraction {
         } else {
             return numerator + "/" + denominator;
         }
-        // 发现有两个转换为String的函数，我合并一下，别用先！！，用了就分母为零了，T-T，我等会试试
-        /*if(numerator == 0 && denominator == 1) {
-            return "0";
-        }
-        if (Math.abs(numerator) >= denominator) {
-            if(denominator == 1) {
-                return String.valueOf(numerator);
-            }else{
-                // 带整数部分的分数字符串输出
-                int integerPart = numerator / denominator;
-                int fractionPartNumerator = numerator % denominator ;
-                if(fractionPartNumerator > 0) {
-                    return integerPart + "'" + fractionPartNumerator + "/" + denominator ;
-                }
-                else return String.valueOf(integerPart);
-            }
-        } else {
-            // 不带整数部分的字符串输出
-            return numerator + "/" + denominator;
-        }*/
     }
 
     public static Fraction createFraction(int range) {
@@ -60,7 +40,7 @@ public class Fraction {
         }
 
         int numerator = random.nextInt(range - 1) + 1;
-        int denominator = random.nextInt(range - 1) + 1;
+        int denominator = random.nextInt(range + 10) + 1;
 
         if (random.nextBoolean()) {
             return new Fraction(numerator, 1);
@@ -79,7 +59,7 @@ public class Fraction {
     }
 
 
-    // 构造函数1，接收字符串格式的操作数，并判断是什么类型的操作数
+    // 构造函数2，接收字符串格式的操作数，并判断是什么类型的操作数
     public Fraction(String string) {
         string = string.trim();
         int wholePart;
@@ -107,7 +87,7 @@ public class Fraction {
         normalize(); // 简化分数
     }
 
-    // 构造函数2，接收分子和分母
+    // 构造函数1，接收分子和分母
     public Fraction(int numerator, int denominator) {
         this.numerator = numerator;
         this.denominator = denominator;
@@ -202,7 +182,7 @@ public class Fraction {
     }
 
     // 加法
-    public String add(Fraction b) {
+    public String add_s(Fraction b) {
         int lcmValue = lcm(denominator, b.denominator);
         int multipleA = lcmValue / denominator;
         int multipleB = lcmValue / b.denominator;
@@ -220,7 +200,7 @@ public class Fraction {
     }
 
     // 减法
-    public String subtract(Fraction b) {
+    public String subtract_s(Fraction b) {
         // a-b
         int lcmValue = lcm(denominator, b.denominator);
         int multipleA = lcmValue / denominator;
@@ -252,7 +232,7 @@ public class Fraction {
     }
 
     // 乘法
-    public String multiply(Fraction b) {
+    public String multiply_s(Fraction b) {
         Fraction product = new Fraction(b.numerator * numerator, b.denominator * denominator);
         return fractionToString(product);
         /*return product.toString();*/
@@ -264,7 +244,7 @@ public class Fraction {
     }
 
     // 除法
-    public String divide(Fraction b) {
+    public String divide_s(Fraction b) {
         // a/b
         Fraction quotient = new Fraction(b.denominator * numerator, b.numerator* denominator);
         return fractionToString(quotient);

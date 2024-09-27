@@ -11,18 +11,8 @@ public class Calculator {
     public static String calculateExpression(String expression) {
         // 解析和计算表达式的方法
         Calculator calculator = new Calculator();
-        String expressionToken = calculator. infixToPostfix(expression, false)[1];
+        String expressionToken = calculator. infixToPostfix(expression)[1];
         return calculator.evaluatePostfix(expressionToken);
-    }
-
-    public static Map<String, String> calculateStandardAnswer(String expression) {
-        // 解析和计算表达式的方法
-        Map<String, String> standardAnswer = new HashMap<>();
-        Calculator calculator = new Calculator();
-        String[] expressionToken = calculator. infixToPostfix(expression, true);
-        String result = calculator.evaluatePostfix(expressionToken[1]);
-        standardAnswer.put(expressionToken[0], result);
-        return standardAnswer;
     }
 
     // 判断一个字符串是否为分数
@@ -57,7 +47,7 @@ public class Calculator {
             // 检查当前字符是否是括号
             if (currentChar == '(' || currentChar == ')') {
                 // 如果之前有非括号字符，将它们添加到结果字符串
-                if (temp.length() > 0) {
+                if (!temp.isEmpty()) {
                     result.append(temp).append(" ");
                     temp.setLength(0); // 清空临时字符串
                 }
@@ -79,7 +69,7 @@ public class Calculator {
     }
 
     // 中缀转后缀
-    public String[] infixToPostfix(String expression, boolean isGrader) {
+    public String[] infixToPostfix(String expression) {
         String index = "0"; // 用于存储题目编号
         Stack<Character> operatorStack = new Stack<>();
         StringBuilder output = new StringBuilder();
@@ -93,9 +83,6 @@ public class Calculator {
 
         // 处理每个token
         for (int tokenIndex = 0;tokenIndex < tokens.length; tokenIndex++) { // 从第一个操作数开始
-            if (isGrader && tokenIndex == 0){
-                tokenIndex++;
-            }
             String token = tokens[tokenIndex];
 
             if(token != null && !token.isEmpty()){//就加了这个
@@ -164,12 +151,12 @@ public class Calculator {
     // 判题计算操作
     private String calculate_s(Fraction a, Fraction b, char operator) {
         return switch (operator) {
-            case '+' -> a.add(b);
-            case '-' -> a.subtract(b);
+            case '+' -> a.add_s(b);
+            case '-' -> a.subtract_s(b);
             // case '*':
-            case '×' -> a.multiply(b);
+            case '×' -> a.multiply_s(b);
             // case '/':
-            case '÷' -> a.divide(b);
+            case '÷' -> a.divide_s(b);
             default -> throw new IllegalArgumentException("无效的运算符: " + operator);
         };
     }
