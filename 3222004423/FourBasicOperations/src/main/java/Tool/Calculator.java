@@ -15,6 +15,16 @@ public class Calculator {
         return calculator.evaluatePostfix(expressionToken);
     }
 
+    public static Map<String, String> calculateStandardAnswer(String expression) {
+        // 解析和计算表达式的方法
+        Map<String, String> standardAnswer = new HashMap<>();
+        Calculator calculator = new Calculator();
+        String[] expressionToken = calculator. infixToPostfix(expression, true);
+        String result = calculator.evaluatePostfix(expressionToken[1]);
+        standardAnswer.put(expressionToken[0], result);
+        return standardAnswer;
+    }
+
     // 判断一个字符串是否为分数
     private static boolean isFraction(String token) {
         // 带分数或真分数
@@ -36,7 +46,7 @@ public class Calculator {
     }
 
     // 分离括号和操作数
-    private String separateParentheses(String input) {
+    public String separateParentheses(String input) {
         // 初始化一个新的StringBuilder用于构建结果字符串
         StringBuilder result = new StringBuilder();
         StringBuilder temp = new StringBuilder(); // 用于暂存括号之间的字符
@@ -125,15 +135,34 @@ public class Calculator {
             } else if (isOperator(token.charAt(0))) {
                 Fraction b = new Fraction(valueStack.pop());
                 Fraction a = new Fraction(valueStack.pop());
-                String result = calculate(a, b, token.charAt(0));
+                String result = calculate_s(a, b, token.charAt(0));
                 valueStack.push(result); // 入栈结果
             }
         }
         return valueStack.pop(); // 返回最终结果
     }
 
-    // 生成计算操作
-    private String calculate(Fraction a, Fraction b, char operator) {
+//    public String evaluatePostfix(String postfix) {
+//        Stack<String> valueStack = new Stack<>();
+//        String[] tokens = postfix.split(" ");
+//
+//        for (String token : tokens) {
+//            if (isFraction(token) || Character.isDigit(token.charAt(0))) {
+//                valueStack.push(token); // 分数或数字入栈
+//            } else if (isOperator(token.charAt(0))) {
+//                Fraction b = new Fraction(valueStack.pop());
+//                Fraction a = new Fraction(valueStack.pop());
+//                // 确保通过正确的方法处理运算符
+//                Fraction result = calculate_f(a, b, " " + token + " ");
+//                valueStack.push(result.toString()); // 结果入栈
+//            }
+//        }
+//        return valueStack.pop(); // 返回最终结果
+//    }
+
+
+    // 判题计算操作
+    private String calculate_s(Fraction a, Fraction b, char operator) {
         return switch (operator) {
             case '+' -> a.add(b);
             case '-' -> a.subtract(b);
@@ -145,5 +174,23 @@ public class Calculator {
         };
     }
 
+    // 生成计算操作
+    public static Fraction calculate_f(Fraction a, Fraction b, String operator) {
+        return switch (operator) {
+            case " + " -> a.add_f(b);
+            case " - " -> a.subtract_f(b);
+            // case '*':
+            case " × " -> a.multiply_f(b);
+            // case '/':
+            case " ÷ " -> a.divide_f(b);
+            default -> throw new IllegalArgumentException("无效的运算符: " + operator);
+        };
+    }
+
+    public static void main(String[] args) {
+        String expression = "(2 + (1 + 1)) - 1/2";
+        String result = Calculator.calculateExpression(expression);
+        System.out.println("Result of (2 + (1 + 1)) - 1/2 = " + result); // Expected: 4'2/5
+    }
 
 }

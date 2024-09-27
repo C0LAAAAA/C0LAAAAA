@@ -5,19 +5,24 @@ import java.util.Random;
 public class Expression {
 
     private static int range;
+
     private static Random random;
+
     private static Node root;
 
     private static final String ADD = " + ";
+
     private static final String SUB = " - ";
+
     private static final String MUL = " × ";
+
     private static final String DIV = " ÷ ";
+
     private static final String LEFT_BRACKET = "(";
+
     private static final String RIGHT_BRACKET = ")";
-    private static final String[] OPERATOR = {ADD,SUB,MUL,DIV};
 
-
-
+    private static final String[] OPERATOR = {ADD, SUB, MUL, DIV};
 
     static {
         random = new Random();
@@ -37,6 +42,7 @@ public class Expression {
             this.rchild = rchild;
             this.lchild = lchild;
         }
+
 
         @Override
         public String toString() {
@@ -59,14 +65,12 @@ public class Expression {
 
         @Override
         public String toString() {
-            if (value != null) {
-                return value.toString();
-            } else {
-                return operator;
-            }
+            return operator;
         }
 
-
+        public String getOperator() {
+            return this.operator;
+        }
     }
 
     // 生成一个随机的算术表达式
@@ -76,6 +80,31 @@ public class Expression {
         return print(root) + " = ";
     }
 
+    public static String getAdjustedExpression() {
+        adjustTree(root);
+        return print(root);
+    }
+
+    public static void adjustTree(Node root) {
+        if (root == null) {
+            return;
+        }
+        if (root instanceof OperatorNode) {
+            OperatorNode operatorNode = (OperatorNode) root;
+            if (ADD.equals(operatorNode.operator) || MUL.equals(operatorNode.operator)) {
+                if (Fraction.compare(root.lchild.value, root.rchild.value)) {
+                    Node temp = root.lchild;
+                    root.lchild = root.rchild;
+                    root.rchild = temp;
+
+                }
+            }
+        }
+
+        adjustTree(root.lchild);
+        adjustTree(root.rchild);
+    }
+
     // 生成表达式树
     public static Node buildExpression(int currentOperators) {
         if (currentOperators == 0) {
@@ -83,14 +112,28 @@ public class Expression {
         }
         OperatorNode parent = new OperatorNode(null, null, OPERATOR[random.nextInt(OPERATOR.length)]);
 
-
         int leftOperators = random.nextInt(currentOperators);
         int rightOperators = currentOperators - leftOperators - 1;
-
 
         parent.lchild = buildExpression(leftOperators);
         parent.rchild = buildExpression(rightOperators);
 
+        Fraction value = Calculator.calculate_f(parent.lchild.value, parent.rchild.value, parent.operator);
+
+        if (SUB.equals(parent.operator)) {
+            if (value.isNegative()) {
+                Node temp = parent.lchild;
+                parent.lchild = parent.rchild;
+                parent.rchild = temp;
+                value.abs();
+            }
+            if (value.isNumeratorZero()) {
+                parent.operator = ADD;
+                value = Calculator.calculate_f(parent.lchild.value, parent.rchild.value, parent.operator);
+            }
+        }
+
+        parent.value = value;
         return parent;
     }
 
@@ -119,8 +162,6 @@ public class Expression {
         return 0;
     }
 
-
-
     private static String print(Node node) {
         if (node == null) {
             return "";
@@ -137,22 +178,7 @@ public class Expression {
             right = LEFT_BRACKET + right + RIGHT_BRACKET;
         }
 
-        return left + mid + right;
+        return left + "" + mid + "" + right;
 
     }
-
-
-
-
-
-    public static void main(String[] args) {
-        setRange(10);
-        String expression = generateExpression();
-        System.out.println("\nGenerated Expression: " + expression);
-    }
-
-
-
-
-
 }

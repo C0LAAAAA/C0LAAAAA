@@ -10,6 +10,11 @@ public class Fraction {
 
     private static Random random = new Random();
 
+    // 检查分子是否为零
+    public boolean isNumeratorZero() {
+        return this.numerator == 0;
+    }
+
 
     @Override
     public String toString() {
@@ -19,7 +24,7 @@ public class Fraction {
             int wholePart = numerator / denominator;
             int remainder = Math.abs(numerator % denominator);
 
-            if (remainder == 0) {
+            if (remainder == 0) { // 我的下面没有这个判断，因为简化函数会有约分，分母为1就是整除了，上面已经输出了，因此删了
                 return String.valueOf(wholePart);
             } else {
                 return wholePart + "'" + remainder + "/" + denominator;
@@ -27,7 +32,26 @@ public class Fraction {
         } else {
             return numerator + "/" + denominator;
         }
-
+        // 发现有两个转换为String的函数，我合并一下，别用先！！，用了就分母为零了，T-T，我等会试试
+        /*if(numerator == 0 && denominator == 1) {
+            return "0";
+        }
+        if (Math.abs(numerator) >= denominator) {
+            if(denominator == 1) {
+                return String.valueOf(numerator);
+            }else{
+                // 带整数部分的分数字符串输出
+                int integerPart = numerator / denominator;
+                int fractionPartNumerator = numerator % denominator ;
+                if(fractionPartNumerator > 0) {
+                    return integerPart + "'" + fractionPartNumerator + "/" + denominator ;
+                }
+                else return String.valueOf(integerPart);
+            }
+        } else {
+            // 不带整数部分的字符串输出
+            return numerator + "/" + denominator;
+        }*/
     }
 
     public static Fraction createFraction(int range) {
@@ -135,9 +159,32 @@ public class Fraction {
         Fraction result = left.subtract_f(right);
         return result.numerator >= 0;
     }
-    private String convertToString(Fraction fraction) {
+
+    //将计算结果转换为字符串
+//    private String fractionToString(Fraction fraction) {
+//        if (fraction.denominator == 1) {
+//            // 分母为1时，直接返回整数部分
+//            return String.valueOf(fraction.numerator);
+//        } else if (Math.abs(fraction.numerator) >= fraction.denominator) {
+//            // 处理带分数部分
+//            int wholePart = fraction.numerator / fraction.denominator;
+//            int remainder = Math.abs(fraction.numerator % fraction.denominator);
+//
+//            if (remainder == 0) {
+//                return String.valueOf(wholePart); // 如果没有余数，返回整数
+//            } else {
+//                return wholePart + "'" + remainder + "/" + fraction.denominator; // 带分数
+//            }
+//        } else {
+//            // 真分数情况
+//            return fraction.numerator + "/" + fraction.denominator;
+//        }
+//    }
+    private String fractionToString(Fraction fraction) {
         if (fraction.numerator >= fraction.denominator) {
-            if(fraction.denominator == 1) {
+            if(fraction.numerator == 0) {
+                return "0";
+            }else if(fraction.denominator == 1) {
                 return String.valueOf(fraction.numerator);
             }else{
                 // 带整数部分的分数字符串输出
@@ -149,11 +196,8 @@ public class Fraction {
                 else return String.valueOf(integerPart);
             }
         } else {
-            if(fraction.numerator == 0) {
-                return "0";
-            }
             // 不带整数部分的字符串输出
-            return fraction.numerator + "/" + fraction.denominator;
+            return numerator + "/" + fraction.denominator;
         }
     }
 
@@ -163,7 +207,16 @@ public class Fraction {
         int multipleA = lcmValue / denominator;
         int multipleB = lcmValue / b.denominator;
         Fraction sum = new Fraction(multipleA * numerator + multipleB * b.numerator, lcmValue);
-        return convertToString(sum);
+        return fractionToString(sum);
+        /*return sum.toString();*/
+    }
+
+    // 加法
+    public Fraction add_f(Fraction b) {
+        int lcmValue = lcm(denominator, b.denominator);
+        int multipleA = lcmValue / denominator;
+        int multipleB = lcmValue / b.denominator;
+        return new Fraction(multipleA * numerator + multipleB * b.numerator, lcmValue);
     }
 
     // 减法
@@ -173,9 +226,23 @@ public class Fraction {
         int multipleA = lcmValue / denominator;
         int multipleB = lcmValue / b.denominator;
         Fraction difference = new Fraction(multipleA * numerator - multipleB * b.numerator, lcmValue);
-        return convertToString(difference);
+        return fractionToString(difference);
         /*return difference.toString();*/
     }
+
+    // 减法
+
+//    public Fraction subtract_f(Fraction b) {
+//        // a - b 的逻辑
+//        int lcmValue = lcm(denominator, b.denominator);
+//        int multipleA = lcmValue / denominator;
+//        int multipleB = lcmValue / b.denominator;
+//
+//        int newNumerator = multipleA * numerator - multipleB * b.numerator;
+//
+//        return new Fraction(newNumerator, lcmValue); // 保证返回简化后的分数
+//    }
+
     public Fraction subtract_f(Fraction b) {
         // a-b
         int lcmValue = lcm(denominator, b.denominator);
@@ -187,14 +254,26 @@ public class Fraction {
     // 乘法
     public String multiply(Fraction b) {
         Fraction product = new Fraction(b.numerator * numerator, b.denominator * denominator);
-        return convertToString(product);
+        return fractionToString(product);
         /*return product.toString();*/
+    }
+
+    // 乘法
+    public Fraction multiply_f(Fraction b) {
+        return new Fraction(b.numerator * numerator, b.denominator * denominator);
     }
 
     // 除法
     public String divide(Fraction b) {
         // a/b
         Fraction quotient = new Fraction(b.denominator * numerator, b.numerator* denominator);
-        return convertToString(quotient);
+        return fractionToString(quotient);
+        /*return quotient.toString();*/
+    }
+
+    // 除法
+    public Fraction divide_f(Fraction b) {
+        // a/b
+        return new Fraction(b.denominator * numerator, b.numerator* denominator);
     }
 }
