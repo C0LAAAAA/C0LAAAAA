@@ -202,4 +202,15 @@ public class Fraction {
         b.normalize();
         return this.numerator == b.numerator && this.denominator == b.denominator;
     }
+
+    // 比较是否在范围内，用于测试
+    public boolean isInRange(int range){
+        if (range <= 1) {
+            return this.numerator == 1 && this.denominator == 1;
+        }else if(this.denominator == 1){
+            return this.numerator <= range;
+        }else {
+            return (this.numerator / this.denominator) <= range;
+        }
+    }
 }

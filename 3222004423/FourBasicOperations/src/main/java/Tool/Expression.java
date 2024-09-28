@@ -6,7 +6,7 @@ public class Expression {
 
     private static int range;                                               // 生成的操作数的数值范围
 
-    private static Random random;                                           // 用于生成伪随机数
+    private static final Random random;                                           // 用于生成伪随机数
 
     private static Node root;                                               // 存储表达式的二叉树的根结点
 
@@ -127,8 +127,7 @@ public class Expression {
         if (root == null) {
             return;
         }
-        if (root instanceof OperatorNode) {
-            OperatorNode operatorNode = (OperatorNode) root;
+        if (root instanceof OperatorNode operatorNode) {
             if (ADD.equals(operatorNode.operator) || MUL.equals(operatorNode.operator)) {
                 if (Fraction.compare(root.lchild.value, root.rchild.value)) {
                     Node temp = root.lchild;
